@@ -904,71 +904,42 @@ Unify Mergr Solutions Pvt. Ltd.
       <div class="fu">
         <div class="con-form-wrap">
           <div id="cForm">
-
-<form action="https://formspree.io/f/mvzwaqve" method="POST">
-
 <div class="f-row">
-<div class="f-g">
-<label>First Name</label>
-<input type="text" name="first_name" placeholder="Your first name" required>
-</div>
-
-<div class="f-g">
-<label>Last Name</label>
-<input type="text" name="last_name" placeholder="Your last name">
-</div>
-</div>
-
-<div class="f-g">
-<label>Work Email</label>
-<input type="email" name="email" placeholder="you@company.com" required>
-</div>
-
-<div class="f-row">
-<div class="f-g">
-<label>Company / Platform</label>
-<input type="text" name="company" placeholder="Your organisation">
-</div>
-
-<div class="f-g">
-<label>Phone (Optional)</label>
-<input type="tel" name="phone" placeholder="+91 XXXXX XXXXX">
-</div>
-</div>
-
-<div class="f-g">
-<label>Research Interest</label>
-<select name="research_interest">
-
-<option value="">Select area of interest</option>
-<option>PE Transaction Data Collection</option>
-<option>VC Deal Research</option>
-<option>M&A Transaction Research</option>
-<option>Investor / Firm Profiling</option>
-<option>Data Validation & QA</option>
-<option>Deal Sourcing & Enrichment</option>
-<option>Company Profiling</option>
-<option>Historical Data Backfill</option>
-<option>Ongoing Coverage Retainer</option>
-<option>General Inquiry</option>
-
-</select>
-</div>
-
-<div class="f-g">
-<label>Tell Us About Your Requirements</label>
-
-<textarea name="message"></textarea>
-
-</div>
-
-<button class="f-submit" type="submit">
-Send Research Inquiry →
-</button>
-
-</form>
-            
-          
+              <div class="f-g"><label>First Name</label><input type="text" id="fn" placeholder="Your first name"></div>
+              <div class="f-g"><label>Last Name</label><input type="text" id="ln" placeholder="Your last name"></div>
+            </div>
+            <div class="f-g"><label>Work Email</label><input type="email" id="em" placeholder="you@company.com"></div>
+            <div class="f-row">
+              <div class="f-g"><label>Company / Platform</label><input type="text" id="co" placeholder="Your organisation"></div>
+              <div class="f-g"><label>Phone (Optional)</label><input type="tel" id="ph" placeholder="+91 XXXXX XXXXX"></div>
+            </div>
+            <div class="f-g">
+              <label>Research Interest</label>
+              <select id="svc">
+                <option value="" disabled selected>Select area of interest</option>
+                <option>PE Transaction Data Collection</option>
+                <option>VC Deal Research</option>
+                <option>M&A Transaction Research</option>
+                <option>Investor / Firm Profiling</option>
+                <option>Data Validation &amp; QA</option>
+                <option>Deal Sourcing &amp; Enrichment</option>
+                <option>Company Profiling</option>
+                <option>Historical Data Backfill</option>
+                <option>Ongoing Coverage Retainer</option>
+                <option>General Inquiry</option>
+              </select>
+            </div>
+            <div class="f-g">
+              <label>Tell Us About Your Requirements</label>
+              <textarea id="msg" placeholder="Describe your data needs — coverage geography, deal types, volume, schema requirements, or any specific research gaps you're looking to fill..."></textarea>
+            </div>
+            <button class="f-submit" onclick="submitForm()">Send Research Inquiry →</button>
+          </div>
+          <div class="f-success" id="fSuccess">
+            <div class="f-success-icon">✦</div>
+            <h3>Inquiry Received</h3>
+            <p>Thank you for reaching out. A member of our research team will review your requirements and respond within 48 hours with a proposed approach and sample data.</p>
+          </div>  
         </div>
       </div>
     </div>
@@ -1051,14 +1022,55 @@ Send Research Inquiry →
   });
 
   // Form submit
-  function submitForm(){
-    const fn=document.getElementById('fn').value.trim();
-    const em=document.getElementById('em').value.trim();
-    const svc=document.getElementById('svc').value;
-    if(!fn||!em||!svc){ alert('Please fill in your name, email, and area of interest.'); return; }
-    document.getElementById('cForm').style.display='none';
-    document.getElementById('fSuccess').style.display='block';
-  }
+function submitForm(){
+
+const fn=document.getElementById('fn').value.trim();
+const ln=document.getElementById('ln').value.trim();
+const em=document.getElementById('em').value.trim();
+const co=document.getElementById('co').value.trim();
+const ph=document.getElementById('ph').value.trim();
+const svc=document.getElementById('svc').value;
+const msg=document.getElementById('msg').value.trim();
+
+if(!fn||!em||!svc){
+alert('Please fill in your name, email, and area of interest.');
+return;
+}
+
+fetch("https://formspree.io/f/mvzwaqve",{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"Accept":"application/json"
+},
+body:JSON.stringify({
+first_name:fn,
+last_name:ln,
+email:em,
+company:co,
+phone:ph,
+research_interest:svc,
+message:msg
+})
+})
+
+.then(response=>{
+
+document.getElementById('cForm').style.display='none';
+document.getElementById('fSuccess').style.display='block';
+
+})
+
+.catch(error=>{
+alert("Error sending inquiry");
+});
+
+}
+
 </script>
+
+  
+
+  
 </body>
 </html>
